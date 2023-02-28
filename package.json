@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pomdtr/space-client"
+    "url": "https://github.com/pomdtr/deta-space-client"
   },
   "types": "dist/index.d.ts",
   "files": [
