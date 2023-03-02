@@ -14,7 +14,7 @@ class InvalidAccessTokenError extends Error {
 }
 
 class DetaSpaceClientClass {
-  private spaceRoot: string = "https://deta.space/api";
+  private spaceRoot: string = "https://deta.space/api/v0";
 
   constructor(private keyId: string, private keySecret: string) {}
 
@@ -43,7 +43,7 @@ class DetaSpaceClientClass {
     const contentType = "application/json";
 
     const toSign = `${method}\n${
-      "/api" + endpoint
+      "/api/v0" + endpoint
     }\n${timestamp}\n${contentType}\n${body}\n`;
 
     const signature = this.signString(this.keySecret, toSign);
