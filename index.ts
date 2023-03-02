@@ -14,7 +14,7 @@ class InvalidAccessTokenError extends Error {
 }
 
 class DetaSpaceClientClass {
-  private spaceRoot: string = "https://deta.space/api/v0";
+  private spaceRoot: string = "https://deta.space/api";
 
   constructor(private keyId: string, private keySecret: string) {}
 
