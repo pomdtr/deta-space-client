@@ -43,7 +43,7 @@ class DetaSpaceClientClass {
     const contentType = "application/json";
 
     const toSign = `${method}\n${
-      "/api/v0" + endpoint
+      "/api" + endpoint
     }\n${timestamp}\n${contentType}\n${body}\n`;
 
     const signature = this.signString(this.keySecret, toSign);
