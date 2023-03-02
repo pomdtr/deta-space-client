@@ -1,6 +1,6 @@
-const { DetaSpaceClient } = require("../dist/index.js");
+const { SpaceClient } = require("../dist/index.js");
 
-const client = DetaSpaceClient();
+const client = SpaceClient();
 client
   .get("/collections")
   .then((res) => res.json())

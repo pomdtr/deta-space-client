@@ -13,7 +13,7 @@ class InvalidAccessTokenError extends Error {
   }
 }
 
-class DetaSpaceClientClass {
+class SpaceClientClass {
   private spaceRoot: string = "https://deta.space/api/v0";
 
   constructor(private keyId: string, private keySecret: string) {}
@@ -59,7 +59,7 @@ class DetaSpaceClientClass {
   }
 }
 
-export function DetaSpaceClient(accessToken?: string) {
+export function SpaceClient(accessToken?: string) {
   if (!accessToken) {
     if (process.env.DETA_SPACE_TOKEN) {
       accessToken = process.env.DETA_SPACE_TOKEN;
@@ -73,5 +73,5 @@ export function DetaSpaceClient(accessToken?: string) {
     throw new InvalidAccessTokenError();
   }
 
-  return new DetaSpaceClientClass(keyId, keySecret);
+  return new SpaceClientClass(keyId, keySecret);
 }
