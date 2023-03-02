@@ -59,7 +59,7 @@ class DetaSpaceClientClass {
   }
 }
 
-export default function DetaSpaceClient(accessToken?: string) {
+export function DetaSpaceClient(accessToken?: string) {
   if (!accessToken) {
     if (process.env.DETA_SPACE_TOKEN) {
       accessToken = process.env.DETA_SPACE_TOKEN;
