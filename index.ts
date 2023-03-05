@@ -26,15 +26,19 @@ class SpaceClientClass {
     this.spaceRoot = host;
   }
 
-  async get(endpoint: string) {
-    return this.request("GET", endpoint, "");
+  async get<T>(endpoint: string) {
+    return this.request<T>("GET", endpoint, "");
   }
 
-  async post(endpoint: string, body: any) {
-    return this.request("POST", endpoint, JSON.stringify(body));
+  async post<T>(endpoint: string, body: any) {
+    return this.request<T>("POST", endpoint, JSON.stringify(body));
   }
 
-  private async request(method: string, endpoint: string, body: string) {
+  private async request<T>(
+    method: string,
+    endpoint: string,
+    body: string
+  ): Promise<T> {
     if (!endpoint.startsWith("/")) {
       endpoint = `/${endpoint}`;
     }
@@ -48,7 +52,7 @@ class SpaceClientClass {
 
     const signature = this.signString(this.keySecret, toSign);
 
-    return fetch(`${this.spaceRoot}${endpoint}`, {
+    const res = await fetch(`${this.spaceRoot}${endpoint}`, {
       method,
       headers: {
         "Content-Type": contentType,
@@ -56,6 +60,14 @@ class SpaceClientClass {
         "X-Deta-Signature": `v0=${this.keyId}:${signature}`,
       },
     });
+
+    if (!res.ok) {
+      throw new Error(
+        `Request failed with status ${res.status}: ${res.statusText}`
+      );
+    }
+
+    return res.json();
   }
 }
 
