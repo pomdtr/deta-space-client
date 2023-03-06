@@ -48,7 +48,7 @@ yargs(process.argv.slice(2))
 
         const spaceclient = SpaceClient(accessToken);
         const res = await spaceclient.get(argv.endpoint);
-        console.log(res);
+        console.log(JSON.stringify(res, null, 2));
       } catch (e) {
         console.error((e as Error).message);
         process.exit(1);
@@ -85,7 +85,7 @@ yargs(process.argv.slice(2))
             : argv.body;
 
         const res = await spaceclient.post(argv.endpoint, JSON.parse(body));
-        console.log(res);
+        console.log(JSON.stringify(res, null, 2));
       } catch (e) {
         console.error((e as Error).message);
         process.exit(1);
