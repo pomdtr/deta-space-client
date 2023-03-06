@@ -52,7 +52,7 @@ yargs(process.argv.slice(2))
             ? await fs.readFileSync(process.stdin.fd, "utf-8")
             : argv.body;
 
-        const res = await spaceclient.post(argv.endpoint, body);
+        const res = await spaceclient.post(argv.endpoint, JSON.parse(body));
         console.log(res);
       } catch (e) {
         console.error((e as Error).message);

@@ -30,7 +30,7 @@ class SpaceClientClass {
     return this.request<T>("GET", endpoint, "");
   }
 
-  async post<T>(endpoint: string, body: any) {
+  async post<T>(endpoint: string, body: unknown) {
     return this.request<T>("POST", endpoint, JSON.stringify(body));
   }
 
@@ -59,6 +59,7 @@ class SpaceClientClass {
         "X-Deta-Timestamp": timestamp,
         "X-Deta-Signature": `v0=${this.keyId}:${signature}`,
       },
+      body,
     });
 
     if (!res.ok) {
