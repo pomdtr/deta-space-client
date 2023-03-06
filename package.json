@@ -1,6 +1,6 @@
 {
   "name": "deta-space-client",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Access the Deta Space API from Node.js",
   "author": {
     "name": "Achille Lacoin"
