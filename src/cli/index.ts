@@ -3,6 +3,26 @@
 import yargs from "yargs";
 import { SpaceClient } from "..";
 import fs from "fs";
+import path from "path";
+import os from "os";
+
+function findAccessToken() {
+  if (process.env.DETA_SPACE_TOKEN) {
+    return process.env.DETA_SPACE_TOKEN;
+  }
+
+  const cliTokenPath = path.join(os.homedir(), ".detaspace", "space_tokens");
+  if (!fs.existsSync(cliTokenPath)) {
+    return;
+  }
+
+  try {
+    const tokens = JSON.parse(fs.readFileSync(cliTokenPath, "utf-8"));
+    return tokens["access_token"];
+  } catch (e) {
+    return;
+  }
+}
 
 yargs(process.argv.slice(2))
   .option("access-token", {
@@ -21,7 +41,12 @@ yargs(process.argv.slice(2))
     },
     async (argv) => {
       try {
-        const spaceclient = SpaceClient(argv.accessToken);
+        let accessToken = argv.accessToken;
+        if (!accessToken) {
+          accessToken = findAccessToken();
+        }
+
+        const spaceclient = SpaceClient(accessToken);
         const res = await spaceclient.get(argv.endpoint);
         console.log(res);
       } catch (e) {
@@ -48,7 +73,12 @@ yargs(process.argv.slice(2))
     },
     async (argv) => {
       try {
-        const spaceclient = SpaceClient(argv.accessToken);
+        let accessToken = argv.accessToken;
+        if (!accessToken) {
+          accessToken = findAccessToken();
+        }
+
+        const spaceclient = SpaceClient(accessToken);
         const body =
           argv.body === "-"
             ? await fs.readFileSync(process.stdin.fd, "utf-8")

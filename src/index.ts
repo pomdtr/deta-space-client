@@ -27,7 +27,7 @@ class SpaceClientClass {
   }
 
   async get<T>(endpoint: string) {
-    return this.request<T>("GET", endpoint, "");
+    return this.request<T>("GET", endpoint);
   }
 
   async post<T>(endpoint: string, body: unknown) {
@@ -49,7 +49,7 @@ class SpaceClientClass {
   private async request<T>(
     method: string,
     endpoint: string,
-    body: string
+    body?: string
   ): Promise<T> {
     if (!endpoint.startsWith("/")) {
       endpoint = `/${endpoint}`;
@@ -60,7 +60,7 @@ class SpaceClientClass {
 
     const toSign = `${method}\n${
       "/api/v0" + endpoint
-    }\n${timestamp}\n${contentType}\n${body}\n`;
+    }\n${timestamp}\n${contentType}\n${body || ""}\n`;
 
     const signature = this.signString(this.keySecret, toSign);
 
