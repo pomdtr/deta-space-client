@@ -34,6 +34,18 @@ class SpaceClientClass {
     return this.request<T>("POST", endpoint, JSON.stringify(body));
   }
 
+  async delete<T>(endpoint: string, body: unknown) {
+    return this.request<T>("DELETE", endpoint, JSON.stringify(body));
+  }
+
+  async put<T>(endpoint: string, body: unknown) {
+    return this.request<T>("PUT", endpoint, JSON.stringify(body));
+  }
+
+  async patch<T>(endpoint: string, body: unknown) {
+    return this.request<T>("PATCH", endpoint, JSON.stringify(body));
+  }
+
   private async request<T>(
     method: string,
     endpoint: string,
