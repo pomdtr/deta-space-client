@@ -30,8 +30,8 @@ class SpaceClientClass {
     return this.request<T>("GET", endpoint);
   }
 
-  async post<T>(endpoint: string, body: unknown) {
-    return this.request<T>("POST", endpoint, JSON.stringify(body));
+  async post<T>(endpoint: string, body?: unknown) {
+    return this.request<T>("POST", endpoint, body ? JSON.stringify(body) : "");
   }
 
   async delete<T>(endpoint: string, body: unknown) {

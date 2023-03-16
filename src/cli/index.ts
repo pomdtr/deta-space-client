@@ -56,7 +56,7 @@ yargs(process.argv.slice(2))
     }
   )
   .command(
-    "post <endpoint> <body>",
+    "post <endpoint>",
     "Do a POST request",
     (yargs) => {
       return yargs
@@ -65,10 +65,9 @@ yargs(process.argv.slice(2))
           type: "string",
           demandOption: true,
         })
-        .positional("body", {
-          describe: "The body to POST. Use - to read from stdin",
-          type: "string",
-          demandOption: true,
+        .option("stdin", {
+          type: "boolean",
+          description: "Read the body from stdin",
         });
     },
     async (argv) => {
@@ -79,12 +78,15 @@ yargs(process.argv.slice(2))
         }
 
         const spaceclient = SpaceClient(accessToken);
-        const body =
-          argv.body === "-"
-            ? await fs.readFileSync(process.stdin.fd, "utf-8")
-            : argv.body;
+        let res: unknown;
 
-        const res = await spaceclient.post(argv.endpoint, JSON.parse(body));
+        if (argv.stdin) {
+          const body = await fs.readFileSync(process.stdin.fd, "utf-8");
+          res = await spaceclient.post(argv.endpoint, JSON.parse(body));
+        } else {
+          res = await spaceclient.post(argv.endpoint);
+        }
+
         console.log(JSON.stringify(res, null, 2));
       } catch (e) {
         console.error((e as Error).message);

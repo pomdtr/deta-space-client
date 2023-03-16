@@ -1,6 +1,8 @@
 #!/bin/bash
 
-space-client get apps | jq -r '.apps[] |
+DIRNAME=$(dirname "$0")
+
+space-client get apps | jq -r --arg dirname "$DIRNAME" '.apps[] |
 {
     title: .name,
     subtitle: .id,

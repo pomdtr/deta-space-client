@@ -20,7 +20,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc --build",
-    "bin": "npm run build && node ./dist/cli/index.js"
+    "cli": "npm run build && node ./dist/cli/index.js"
   },
   "devDependencies": {
     "@types/node": "^18.14.2",
