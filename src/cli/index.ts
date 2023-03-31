@@ -97,4 +97,5 @@ yargs(process.argv.slice(2))
   .demandCommand()
   .help()
   .strict()
+  .detectLocale(false)
   .parse();

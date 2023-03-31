@@ -19,3 +19,18 @@ spaceClient.get("/endpoint").then((response) => {
   console.log(response);
 });
 ```
+
+## CLI
+
+```txt
+space-client <command>
+
+Commands:
+  index.js get <endpoint>   Do a GET request
+  index.js post <endpoint>  Do a POST request
+
+Options:
+  --version       Show version number                                  [boolean]
+  --access-token  The space access token                                [string]
+  --help          Show help                                            [boolean]
+```
