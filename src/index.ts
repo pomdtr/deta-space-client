@@ -14,7 +14,7 @@ class InvalidAccessTokenError extends Error {
 }
 
 class SpaceClientClass {
-  private spaceRoot: string = "https://deta.space/api/v0";
+  private spaceRoot: string = "https://deta.space/api";
 
   constructor(private keyId: string, private keySecret: string) {}
 
@@ -24,6 +24,13 @@ class SpaceClientClass {
 
   setSpaceRoot(host: string) {
     this.spaceRoot = host;
+  }
+
+  url(endpoint: string) {
+    if (!endpoint.startsWith("/")) {
+      endpoint = `/${endpoint}`;
+    }
+    return `${this.spaceRoot}${endpoint}`;
   }
 
   async get<T>(endpoint: string) {
@@ -58,8 +65,8 @@ class SpaceClientClass {
     const timestamp = Date.now().toString().slice(0, 10);
     const contentType = "application/json";
 
-    const toSign = `${method}\n${
-      "/api/v0" + endpoint
+    const toSign = `${method}\n$/api${
+      endpoint.startsWith("/") ? endpoint : "/" + endpoint
     }\n${timestamp}\n${contentType}\n${body || ""}\n`;
 
     const signature = this.signString(this.keySecret, toSign);
