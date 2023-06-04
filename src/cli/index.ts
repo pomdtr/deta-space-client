@@ -48,7 +48,11 @@ yargs(process.argv.slice(2))
 
         const spaceclient = SpaceClient(accessToken);
         const res = await spaceclient.get(argv.endpoint);
-        console.log(JSON.stringify(res, null, 2));
+        try {
+          console.log(JSON.stringify(await res.json(), null, 2));
+        } catch (e) {
+          console.log(res.text());
+        }
       } catch (e) {
         console.error((e as Error).message);
         process.exit(1);
@@ -78,16 +82,20 @@ yargs(process.argv.slice(2))
         }
 
         const spaceclient = SpaceClient(accessToken);
-        let res: unknown;
 
+        let res: Response;
         if (argv.stdin) {
           const body = await fs.readFileSync(process.stdin.fd, "utf-8");
-          res = await spaceclient.post(argv.endpoint, JSON.parse(body));
+          res = await spaceclient.post(argv.endpoint, body);
         } else {
           res = await spaceclient.post(argv.endpoint);
         }
 
-        console.log(JSON.stringify(res, null, 2));
+        try {
+          console.log(JSON.stringify(await res.json(), null, 2));
+        } catch (e) {
+          console.log(res.text());
+        }
       } catch (e) {
         console.error((e as Error).message);
         process.exit(1);

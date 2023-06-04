@@ -33,31 +33,27 @@ class SpaceClientClass {
     return `${this.spaceRoot}${endpoint}`;
   }
 
-  async get<T>(endpoint: string) {
-    return this.request<T>("GET", endpoint);
+  async get(endpoint: string) {
+    return this.request("GET", endpoint);
   }
 
-  async post<T>(endpoint: string, body?: unknown) {
-    return this.request<T>("POST", endpoint, body ? JSON.stringify(body) : "");
+  async post(endpoint: string, body?: string) {
+    return this.request("POST", endpoint, body);
   }
 
-  async delete<T>(endpoint: string, body: unknown) {
-    return this.request<T>("DELETE", endpoint, JSON.stringify(body));
+  async delete(endpoint: string, body?: string) {
+    return this.request("DELETE", endpoint, body);
   }
 
-  async put<T>(endpoint: string, body: unknown) {
-    return this.request<T>("PUT", endpoint, JSON.stringify(body));
+  async put(endpoint: string, body?: string) {
+    return this.request("PUT", endpoint, body);
   }
 
-  async patch<T>(endpoint: string, body: unknown) {
-    return this.request<T>("PATCH", endpoint, JSON.stringify(body));
+  async patch(endpoint: string, body?: string) {
+    return this.request("PATCH", endpoint, body);
   }
 
-  private async request<T>(
-    method: string,
-    endpoint: string,
-    body?: string
-  ): Promise<T> {
+  private async request(method: string, endpoint: string, body?: string) {
     if (!endpoint.startsWith("/")) {
       endpoint = `/${endpoint}`;
     }
@@ -65,9 +61,11 @@ class SpaceClientClass {
     const timestamp = Date.now().toString().slice(0, 10);
     const contentType = "application/json";
 
-    const toSign = `${method}\n$/api${
-      endpoint.startsWith("/") ? endpoint : "/" + endpoint
-    }\n${timestamp}\n${contentType}\n${body || ""}\n`;
+    const toSign = `${method}\n/api${endpoint}\n${timestamp}\n${contentType}\n${
+      body || ""
+    }\n`;
+
+    console.log(toSign);
 
     const signature = this.signString(this.keySecret, toSign);
 
@@ -87,7 +85,7 @@ class SpaceClientClass {
       );
     }
 
-    return res.json();
+    return res;
   }
 }
 
