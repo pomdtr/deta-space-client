@@ -1,4 +1,3 @@
-import fetch from "cross-fetch";
 import crypto from "crypto";
 
 class NoAccessTokenError extends Error {
