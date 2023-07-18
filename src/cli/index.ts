@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import yargs from "yargs";
-import { SpaceClient } from "..";
+import { fetchFn } from "..";
 import fs from "fs";
 import path from "path";
 import os from "os";
@@ -46,8 +46,8 @@ yargs(process.argv.slice(2))
           accessToken = findAccessToken();
         }
 
-        const spaceclient = SpaceClient(accessToken);
-        const res = await spaceclient.get(argv.endpoint);
+        const fetchFromSpace = fetchFn(accessToken);
+        const res = await fetchFromSpace(argv.endpoint);
         try {
           console.log(JSON.stringify(await res.json(), null, 2));
         } catch (e) {
@@ -81,14 +81,17 @@ yargs(process.argv.slice(2))
           accessToken = findAccessToken();
         }
 
-        const spaceclient = SpaceClient(accessToken);
+        const fetchFromSpace = fetchFn(accessToken);
 
         let res: Response;
         if (argv.stdin) {
           const body = await fs.readFileSync(process.stdin.fd, "utf-8");
-          res = await spaceclient.post(argv.endpoint, body);
+          res = await fetchFromSpace(argv.endpoint, {
+            method: "POST",
+            body,
+          });
         } else {
-          res = await spaceclient.post(argv.endpoint);
+          res = await fetchFromSpace(argv.endpoint);
         }
 
         try {
