@@ -27,10 +27,6 @@ export function fetchFn(accessToken: string) {
       endpoint = `/${endpoint}`;
     }
 
-    if (!endpoint.startsWith("/v0")) {
-      endpoint = `/v0${endpoint}`;
-    }
-
     const timestamp = Date.now().toString().slice(0, 10);
     const contentType = "application/json";
 
