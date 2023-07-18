@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 
-function findAccessToken() {
+function loadAccessToken() {
   if (process.env.DETA_SPACE_TOKEN) {
     return process.env.DETA_SPACE_TOKEN;
   }
@@ -20,7 +20,7 @@ function findAccessToken() {
     const tokens = JSON.parse(fs.readFileSync(cliTokenPath, "utf-8"));
     return tokens["access_token"];
   } catch (e) {
-    return;
+    throw new Error("Invalid access token");
   }
 }
 
@@ -41,10 +41,7 @@ yargs(process.argv.slice(2))
     },
     async (argv) => {
       try {
-        let accessToken = argv.accessToken;
-        if (!accessToken) {
-          accessToken = findAccessToken();
-        }
+        let accessToken = argv.accessToken || loadAccessToken();
 
         const fetchFromSpace = fetchFn(accessToken);
         const res = await fetchFromSpace(argv.endpoint);
@@ -76,11 +73,7 @@ yargs(process.argv.slice(2))
     },
     async (argv) => {
       try {
-        let accessToken = argv.accessToken;
-        if (!accessToken) {
-          accessToken = findAccessToken();
-        }
-
+        let accessToken = argv.accessToken || loadAccessToken();
         const fetchFromSpace = fetchFn(accessToken);
 
         let res: Response;

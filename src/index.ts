@@ -16,14 +16,7 @@ function signString(keySecret: string, toSign: string) {
   return crypto.createHmac("sha256", keySecret).update(toSign).digest("hex");
 }
 
-export function fetchFn(accessToken?: string) {
-  if (!accessToken) {
-    if (process.env.DETA_SPACE_TOKEN) {
-      accessToken = process.env.DETA_SPACE_TOKEN;
-    } else {
-      throw new NoAccessTokenError();
-    }
-  }
+export function fetchFn(accessToken: string) {
   const [keyId, keySecret] = accessToken.split("_");
   if (!keyId || !keySecret) {
     throw new InvalidAccessTokenError();
