@@ -1,11 +1,5 @@
 import crypto from "crypto";
 
-class NoAccessTokenError extends Error {
-  constructor() {
-    super("Access token not found");
-  }
-}
-
 class InvalidAccessTokenError extends Error {
   constructor() {
     super("Invalid access token");
@@ -22,21 +16,30 @@ export function fetchFn(accessToken: string) {
     throw new InvalidAccessTokenError();
   }
 
-  return async (endpoint: string, options?: RequestInit) => {
-    if (!endpoint.startsWith("/")) {
-      endpoint = `/${endpoint}`;
+  return async (url: string, options?: RequestInit) => {
+    if (!url.startsWith("https") && !url.startsWith("http")) {
+      if (!url.startsWith("/")) {
+        url = `/${url}`;
+      }
+
+      if (!url.startsWith("/v0")) {
+        url = `/v0${url}`;
+      }
+
+      url = `https://deta.space/api${url}`;
     }
 
+    const { pathname } = new URL(url);
     const timestamp = Date.now().toString().slice(0, 10);
     const contentType = "application/json";
 
     const toSign = `${
       options?.method || "GET"
-    }\n/api${endpoint}\n${timestamp}\n${contentType}\n${options?.body || ""}\n`;
+    }\n${pathname}\n${timestamp}\n${contentType}\n${options?.body || ""}\n`;
 
     const signature = signString(keySecret, toSign);
 
-    const res = await fetch(`https://deta.space/api${endpoint}`, {
+    const res = await fetch(url, {
       ...options,
       headers: {
         "Content-Type": contentType,
