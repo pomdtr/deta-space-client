@@ -29,13 +29,15 @@ export function fetchFn(accessToken: string) {
       url = `https://deta.space/api${url}`;
     }
 
-    const { pathname } = new URL(url);
+    const { pathname, search } = new URL(url);
     const timestamp = Date.now().toString().slice(0, 10);
     const contentType = "application/json";
 
     const toSign = `${
       options?.method || "GET"
-    }\n${pathname}\n${timestamp}\n${contentType}\n${options?.body || ""}\n`;
+    }\n${pathname}${search}\n${timestamp}\n${contentType}\n${
+      options?.body || ""
+    }\n`;
 
     const signature = signString(keySecret, toSign);
 
