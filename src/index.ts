@@ -1,4 +1,7 @@
 import crypto from "crypto";
+if (!globalThis.fetch) {
+  globalThis.fetch = require("cross-fetch");
+}
 
 class InvalidAccessTokenError extends Error {
   constructor() {

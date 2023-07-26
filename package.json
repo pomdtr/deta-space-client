@@ -31,6 +31,7 @@
     "space-client": "./dist/cli/index.js"
   },
   "dependencies": {
+    "cross-fetch": "^4.0.0",
     "yargs": "^17.7.1"
   }
 }
